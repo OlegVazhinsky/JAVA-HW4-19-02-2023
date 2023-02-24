@@ -1,9 +1,4 @@
-/*
-
-Работа алгоритма Ли
-
-*/
-
+// Задача: реализовать работу алгоритма Ли.
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,6 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javax.swing.plaf.synth.SynthSplitPaneUI;
 // создать класс Point который будет имитировать точку на дискретном поле
 class Point {
     // координаты
@@ -42,21 +38,19 @@ class Point {
         return answer;
     }
 }
-
+// основной класс
 public class task{
     public static void main(String[] args) throws IOException, FileNotFoundException{
         try {
-            // считать и вывести исходное поле
+            // считать исходное поле
             int[][] field = readField("field.txt");
-            System.out.println("Исходная карта.");
-            showField(field);
             // задать координату начала и конца пути
-            Point startPoint = new Point(5, 5);
-            Point endPoint = new Point(17, 4);
-            if (){
-
-            }
-            else {
+            Point startPoint = new Point(1, 4);
+            Point endPoint = new Point(22, 1);
+            if (startPoint.isFree(field) & endPoint.isFree(field)){
+                // вывести начальное поле
+                System.out.println("Исходная карта.");
+                showField(field);
                 // инициировать волну на поле, показать результат
                 waveSpread(field, startPoint);
                 System.out.println("Карта с весовыми коэффициентами пути.");
@@ -65,6 +59,9 @@ public class task{
                 wayOut(field, startPoint, endPoint);
                 System.out.println("Карта с путем выхода.");
                 showField(field);
+            }
+            else {
+                System.out.println("Начальная или конечная точка указаны неверно.");;
             }
         // обработка исключений
         } catch (Exception e) {
@@ -175,17 +172,21 @@ public class task{
         }
         return field;
     }
-
     // переменные для окрашивания поля при выводе
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m"; 
     public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
     public static final String ANSI_RED_BACKGROUND = "\u001B[41m";   
     public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
     public static final String ANSI_RESET = "\u001B[0m";
-
     // метод вывода поля в консоль
     public static void showField(int[][] array){
+        System.out.printf("%3s", " ");
+        for (int i = 0; i < array[0].length; i++) {
+            System.out.printf("%3d", i);
+        }
+        System.out.println();
         for (int i = 0; i < array.length; i++){
+            System.out.printf("%3d", i);
             for (int j = 0; j < array[0].length; j++){
                 if (array[i][j] == -1) System.out.printf(ANSI_RED_BACKGROUND + "%3d" + ANSI_RESET, array[i][j]);
                 else if (array[i][j] == -2) System.out.printf(ANSI_BLUE_BACKGROUND + "%3d" + ANSI_RESET, array[i][j]);
